@@ -1,7 +1,8 @@
 module KWIC
   class V1
     attr_accessor :core
-    
+
+    # A.K.A MasterControl
     def index(input_text)
       # clear our fake memory
       self.core = {}

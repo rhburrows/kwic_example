@@ -88,7 +88,7 @@ year because of Isis's tears of sorrow for her dead Nile flooded every - 6
 EOT
 
   def test_indexing
-    assert_equal @kwic.index(SAMPLE_TEXT), EXPECTED_TEXT.chomp
+    assert_equal EXPECTED_TEXT.chomp, @kwic.index(SAMPLE_TEXT)
   end
 
   def output
