@@ -1,5 +1,7 @@
 module KWIC
   class V1
+    STORAGE_FILE = 'tmp/some_file.txt'
+
     attr_accessor :core
 
     # A.K.A MasterControl
@@ -19,11 +21,13 @@ module KWIC
       end
       
       def call(input)
-        lines = input.split(/\n/).map do |line|
-          line.chomp
-        end
+        FileUtils.rm(STORAGE_FILE) if File.exists?(STORAGE_FILE)
 
-        @core[:input] = lines
+        File.open(STORAGE_FILE, 'w') do |file|
+          lines = input.split(/\n/).map do |line|
+            file.puts line.chomp
+          end
+        end
       end
     end
 
@@ -34,8 +38,9 @@ module KWIC
       
       def call
         shifts = []
-        
-        @core[:input].each_with_index do |line, index|
+
+        file = File.open(STORAGE_FILE)
+        file.readlines.each_with_index do |line, index|
           line_num = index + 1
           words = line.split(/\s+/)
           words_range = (1..words.length)
@@ -46,6 +51,7 @@ module KWIC
             shifts << [line_num, shift]
           end
         end
+        file.close
 
         @core[:shifts] = shifts
       end
