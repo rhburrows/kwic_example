@@ -16,14 +16,21 @@ module KWIC
     end
 
     class LineStorage
-      attr_reader :lines
+      STORAGE_FILE = 'tmp/some_file.txt'
       
       def initialize
-        @lines = []
+        FileUtils.rm(STORAGE_FILE) if File.exists?(STORAGE_FILE)
+        FileUtils.touch(STORAGE_FILE)
       end
       
       def add_line(line)
-        @lines << line
+        File.open(STORAGE_FILE, 'a') do |f|
+          f.puts line
+        end
+      end
+
+      def lines
+        File.open(STORAGE_FILE).readlines
       end
     end
     
